@@ -10,15 +10,14 @@ const Users = () => {
     };
 
     const handleChange = (value) => {
-
         if (!value) {
             setUserData(users);
             return;
-        };
+        }
 
         const filteredUsers = users.filter(ele =>
             ele?.firstName?.toLowerCase().includes(value.toLowerCase()) ||
-            ele?.age == value ||
+            ele?.age?.toString().includes(value) || // Convert age to string for comparison
             ele?.bloodGroup?.toLowerCase().includes(value.toLowerCase())
         );
 
@@ -253,6 +252,7 @@ const Users = () => {
                             <th style={styles.th}>Email</th>
                             <th style={styles.th}>Birthdate</th>
                             <th style={styles.th}>phone</th>
+                            <th style={styles.th}>Blood group</th>
                         </tr>
                     </thead>
                     <tbody style={styles.tbody}>
@@ -302,6 +302,9 @@ const Users = () => {
                                     <div style={styles.cellText}>
                                         <a href={`tel:${user.phone}`}>{user.phone}</a>
                                     </div>
+                                </td>
+                                <td style={styles.td}>
+                                    <div style={styles.cellText}>{user.bloodGroup}</div>
                                 </td>
                             </tr>
                         ))}
