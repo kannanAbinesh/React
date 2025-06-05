@@ -1,11 +1,28 @@
-import React from 'react';
-// import { Search, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 import users from './users.json';
 
 const Users = () => {
 
+    const [userData, setUserData] = useState(users);
+
     const getInitials = (name) => {
         return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    };
+
+    const handleChange = (value) => {
+
+        if (!value) {
+            setUserData(users);
+            return;
+        };
+
+        const filteredUsers = users.filter(ele =>
+            ele?.firstName?.toLowerCase().includes(value.toLowerCase()) ||
+            ele?.age == value ||
+            ele?.bloodGroup?.toLowerCase().includes(value.toLowerCase())
+        );
+
+        setUserData(filteredUsers);
     };
 
     const getInitialsBgColor = (name) => {
@@ -217,9 +234,10 @@ const Users = () => {
                                 e.target.style.borderColor = '#d1d5db';
                                 e.target.style.boxShadow = 'none';
                             }}
+                            onChange={(e) => handleChange(e?.target?.value)}
                         />
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -238,7 +256,7 @@ const Users = () => {
                         </tr>
                     </thead>
                     <tbody style={styles.tbody}>
-                        {users.map((user) => (
+                        {userData.map((user) => (
                             <tr
                                 key={user.id}
                                 style={styles.tr}
@@ -273,13 +291,17 @@ const Users = () => {
                                     <div style={styles.cellText}>{user.gender}</div>
                                 </td>
                                 <td style={styles.td}>
-                                    <div style={styles.cellText}>{user.email}</div>
+                                    <div style={styles.cellText}>
+                                        <a href={`mailto:${user.email}`}>{user.email}</a>
+                                    </div>
                                 </td>
                                 <td style={styles.td}>
                                     <div style={styles.cellText}>{user.birthDate}</div>
                                 </td>
                                 <td style={styles.td}>
-                                    <div style={styles.cellText}>{user.phone}</div>
+                                    <div style={styles.cellText}>
+                                        <a href={`tel:${user.phone}`}>{user.phone}</a>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
